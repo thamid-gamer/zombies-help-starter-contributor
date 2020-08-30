@@ -2,19 +2,35 @@
   "name": "zombies-help-starter",
   "version": "0.1.0",
   "private": true,
+  "main": "public/electron.js",
+  "homepage": "./",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "foreman": "^3.0.1",
+    "function-rate-limit": "^1.1.0",
+    "mineflayer": "^2.28.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "electron": "electron .",
+    "electron2": "node src/electron-wait-react.js",
+    "start": "nf start",
+
+    "build:osx": "electron-builder --mac -c.extraMetadata.main=build/electron.js",
+    "build:linux": "npm run build:linux32 && npm run build:linux64",
+    "build:linux32": "electron-builder --linux --ia32 -c.extraMetadata.main=build/electron.js",
+    "build:linux64": "electron-builder --linux --x64 -c.extraMetadata.main=build/electron.js",
+    "build:win": "npm run build:win32 && npm run build:win64", 
+    "build:win32": "electron-builder --win --ia32 -c.extraMetadata.main=build/electron.js",
+    "build:win64": "electron-builder --win --x64 -c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -29,6 +45,59 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^9.2.1",
+    "electron-builder": "^22.8.0"
+  },
+  "build": {
+    "productName": "ZombiesHelpStarterContributor",
+    "appId": "kr.syeyoung.helpstart",
+    "asar": true,
+    "protocols" : {
+        "name" : "ZombiesHelpStarterContributor",
+        "schemes" : ["ZombiesHelpStarterContributor"]
+    },
+    "mac": {
+      "target": [
+        "default"
+      ],
+      "icon": "./resources/installer/Icon.icns"
+    },
+    "dmg": {
+      "title": "ZombiesHelpStarterContributor",
+      "icon": "./resources/installer/Icon.icns"
+    },
+    "win": { 
+      "target": [ 
+        "zip",  
+        "nsis" 
+      ],
+      "icon": "./resources/installer/Icon.ico"
+    },
+    "linux": { 
+      "target": [
+        "AppImage", 
+        "deb",
+        "rpm",
+        "zip",
+        "tar.gz"
+      ],
+      "icon": "./resources/linuxicon"
+    },
+    "nsis":{
+      "oneClick" : false, 
+      "allowToChangeInstallationDirectory" :true 
+    },
+    "directories": {
+      "buildResources": "resources/installer/",
+      "output": "dist/", 
+      "app": "."
+    },
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
     ]
   }
 }
