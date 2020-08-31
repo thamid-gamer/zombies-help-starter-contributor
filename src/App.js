@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { createBot, getBot, disconnect } from './connection';
 
 import './App.css';
-import { mcChatToString } from './util';
+import { mcChatToString, splitText } from './util';
 
 class App extends Component {
   constructor(props) {
@@ -19,15 +19,19 @@ class App extends Component {
     this.onChat = this.onChat.bind(this);
   }
 
+  appendArrayToLog(log) {
+      this.setState(st => ({log: [...st.log, log]}));
+  }
+
   appendToLog(log) {
-    this.setState(st => ({log: [...st.log, log]}))
+      this.appendArrayToLog([{text: log, style: {color: "black"}}]);
   }
 
   connect() {
     this.appendToLog("connecting");
-    if (!this.state.connected) 
+    if (!this.state.connected)
       createBot(this.state.username, this.state.password, this.onConnect, this.onDisconnect, this.onError);
-  } 
+  }
 
   disconnect2() {
     if (getBot() === undefined) return;
@@ -48,7 +52,7 @@ class App extends Component {
     if (packet.position === 2) return;
     console.log(packet.message);
     try {
-      this.appendToLog(mcChatToString(JSON.parse(packet.message)));
+      this.appendArrayToLog(splitText(mcChatToString(JSON.parse(packet.message))));
     } catch (e) {
       this.appendToLog(packet.message);
     }
@@ -121,10 +125,14 @@ class App extends Component {
             <div className="chat-wrapper-wrapper">
               <div className="chat-wrapper">
                 <div className="fill"></div>
-                {this.state.log.map((l,i) => <span className="chat-content" key={i}>{l}</span>)}
+                {this.state.log.map((l,i) =>
+                  <div key={i}>
+                  {l.map((v,k) => <span className="chat-content" style={v.style} key={k}>{v.text}</span>)}
+                  </div>
+                )}
               </div>
             </div>
-            
+
             <div className="credential">
               <input type="text" className="credential" placeholder="chat" value={this.state.chat} onChange={(ev) => this.setState({chat: ev.target.value})}/>
               <button className="send" onClick={this.sendChat}>send</button>
