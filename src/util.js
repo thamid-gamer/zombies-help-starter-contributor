@@ -57,14 +57,14 @@ const styleMap = {
     c: "#FF5555",
     d: "#FF55FF",
     e: "#FFFF55",
-    f: "black" // Should be white but we need it to be displayed
+    f: "#FFFFFF"
 }
 
 export function splitText(msg) {
     const components = msg.split("§");
     let displayComponents = [{text: components[0], style: {color: "black"}}];
 
-    let style = {color: "black"};
+    let style = {color: "white"};
     let obfuscated = false;
 
     for (var i = 1; i < components.length; i++) {
@@ -92,7 +92,7 @@ export function splitText(msg) {
                     obfuscated = true;
                     break;
                 case "r":
-                    style = {color: "black"};
+                    style = {color: "white"};
                     obfuscated = false;
                     break;
                 default:
