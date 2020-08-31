@@ -24,7 +24,7 @@ class App extends Component {
   }
 
   appendToLog(log) {
-      this.appendArrayToLog([{text: log, style: {color: "black"}}]);
+      this.appendArrayToLog([{text: log, style: {color: "white"}}]);
   }
 
   connect() {
@@ -52,7 +52,10 @@ class App extends Component {
     if (packet.position === 2) return;
     console.log(packet.message);
     try {
-      this.appendArrayToLog(splitText(mcChatToString(JSON.parse(packet.message))));
+      const mcChat = mcChatToString(JSON.parse(packet.message));
+      for (const line of mcChat.split("\n")) {
+        this.appendArrayToLog(splitText(line));
+      }
     } catch (e) {
       this.appendToLog(packet.message);
     }
@@ -79,7 +82,7 @@ class App extends Component {
     if (chat.startsWith("/p")) {
       this.appendToLog("please no command that starts with /p");
       return;
-    } else if (chat.startsWith("/lobby") || chat.startsWith("/zoo")) {
+    } else if (chat.startsWith("/lobby") || chat.startsWith("/zoo") || chat.startsWith("/hub")) {
       this.appendToLog("please no lobby commands");
       return;
     } else {
