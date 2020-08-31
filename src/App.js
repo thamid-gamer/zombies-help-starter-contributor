@@ -165,7 +165,7 @@ class App extends Component {
             </div>
 
             <div className="credential">
-              <input type="text" className="credential" placeholder="chat" value={this.state.chat} onChange={(ev) => this.setState({chat: ev.target.value})} onKeyDown={(ev) => {if(ev.key === "Enter") this.sendChat()}}/>
+              <input type="text" className="credential" placeholder="Enter chat here..." value={this.state.chat} onChange={(ev) => this.setState({chat: ev.target.value})} onKeyDown={(ev) => {if(ev.key === "Enter") this.sendChat()}}/>
               <button className="send" onClick={this.sendChat}>send</button>
             </div>
           </div>
