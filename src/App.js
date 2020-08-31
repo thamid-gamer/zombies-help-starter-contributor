@@ -4,6 +4,15 @@ import { createBot, getBot, disconnect } from './connection';
 import './App.css';
 import { mcChatToString, splitText } from './util';
 
+
+const LogComponent = React.memo((props) => {
+  return <>{props.log.map((l,i) =>
+    <div key={i}>
+    {l.map((v,k) => <span className="chat-content" style={v.style} key={k}>{v.text}</span>)}
+    </div>
+  )}</>
+});
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -128,11 +137,7 @@ class App extends Component {
             <div className="chat-wrapper-wrapper">
               <div className="chat-wrapper">
                 <div className="fill"></div>
-                {this.state.log.map((l,i) =>
-                  <div key={i}>
-                  {l.map((v,k) => <span className="chat-content" style={v.style} key={k}>{v.text}</span>)}
-                  </div>
-                )}
+                <LogComponent log={this.state.log}/>
               </div>
             </div>
 
