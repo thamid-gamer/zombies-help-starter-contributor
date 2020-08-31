@@ -74,16 +74,10 @@ body, html {
     display: flex;
 }
 
-.chat-content {
-    display: flex;
-    flex: none;
-    width: 100%;
-}
-
 .credential p {
     display: flex;
     padding: 5px;
-} 
+}
 
 .credential input {
     display: flex;
