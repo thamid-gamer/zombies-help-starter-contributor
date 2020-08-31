@@ -129,3 +129,11 @@ body, html {
     border-radius: 5px;
     height: 100%;
 }
+
+.send {
+    padding: 10px;
+    border-radius: 10px;
+    border-width: 1px;
+    margin: 5px;
+    margin-left: 0px;
+}
