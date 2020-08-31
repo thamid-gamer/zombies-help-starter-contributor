@@ -104,7 +104,7 @@ body, html {
 }
 
 .chat-wrapper {
-    background-color: white;
+    background-color: gray;
     display: flex;
 
     border-radius: 5px;
