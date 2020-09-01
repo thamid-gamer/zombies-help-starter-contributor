@@ -109,7 +109,7 @@ class App extends Component {
   getSnapshotBeforeUpdate() {
     console.log(this.logReferences);
     const current = this.logReferences.chatWrapper.current;
-    this.shouldScroll = (current !== null && (current.scrollTop === current.scrollHeight - current.offsetHeight));
+    this.shouldScroll = (current !== null && (current.scrollHeight - current.scrollTop === current.clientHeight));
 
     return null;
   }
