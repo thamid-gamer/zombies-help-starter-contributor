@@ -26,6 +26,11 @@ class App extends Component {
     this.connect = this.connect.bind(this);
     this.sendChat = this.sendChat.bind(this);
     this.onChat = this.onChat.bind(this);
+
+    this.logReferences = {
+      chatWrapper : React.createRef(),
+      bottomLog : React.createRef()
+    }
   }
 
   appendArrayToLog(log) {
@@ -101,6 +106,23 @@ class App extends Component {
     this.setState({chat: ''});
   }
 
+  getSnapshotBeforeUpdate() {
+    console.log(this.logReferences);
+    const current = this.logReferences.chatWrapper.current;
+    this.shouldScroll = (current !== null && (current.scrollHeight - current.scrollTop === current.clientHeight));
+
+    return null;
+  }
+
+  componentDidUpdate() {
+    if (this.shouldScroll) {
+      const current = this.logReferences.bottomLog.current;
+      if (current !== null) {
+        current.scrollIntoView();
+      }
+    }
+  }
+
   render() {
     return (
       <div className="container">
@@ -135,14 +157,15 @@ class App extends Component {
           <div className="chat">
             <h2>Chat / Log</h2>
             <div className="chat-wrapper-wrapper">
-              <div className="chat-wrapper">
+              <div className="chat-wrapper" ref={this.logReferences.chatWrapper}>
                 <div className="fill"></div>
                 <LogComponent log={this.state.log}/>
+                <div className="end" ref={this.logReferences.bottomLog}></div>
               </div>
             </div>
 
             <div className="credential">
-              <input type="text" className="credential" placeholder="chat" value={this.state.chat} onChange={(ev) => this.setState({chat: ev.target.value})}/>
+              <input type="text" className="credential" placeholder="Enter chat here..." value={this.state.chat} onChange={(ev) => this.setState({chat: ev.target.value})} onKeyDown={(ev) => {if(ev.key === "Enter") this.sendChat()}}/>
               <button className="send" onClick={this.sendChat}>send</button>
             </div>
           </div>
