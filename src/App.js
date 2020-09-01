@@ -99,6 +99,9 @@ class App extends Component {
     } else if (chat.startsWith("/lobby") || chat.startsWith("/zoo") || chat.startsWith("/hub")) {
       this.appendToLog("please no lobby commands");
       return;
+    } else if (chat.startsWith("/rej")) {
+      this.appendToLog("please no rejoining games");
+      return;
     } else {
       getBot().chat(this.state.chat);
     }
