@@ -5,6 +5,10 @@ os: osx
 
 install:
 - npm install
+- npm audit fix
+- npm install react-scripts@4.0.1
+- npm install eslint
 
 script:
-- npm version
+- npm run-script react-build
+- npm run-script build:osx
