@@ -62,12 +62,10 @@
     "mac": {
       "target": [
         "default"
-      ],
-      "icon": "./resources/installer/Icon.icns"
+      ]
     },
     "dmg": {
-      "title": "ZombiesHelpStarterContributor",
-      "icon": "./resources/installer/Icon.icns"
+      "title": "ZombiesHelpStarterContributor"
     },
     "win": { 
       "target": [ 
