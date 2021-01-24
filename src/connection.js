@@ -1,11 +1,8 @@
-
 import { mcChatToString } from './util';
 
 const mineflayer = window.require('electron').remote.require('mineflayer');
 const Vec3 = window.require('electron').remote.require('vec3').Vec3;
 var rateLimit = require('function-rate-limit');
-
-
 
 var bot;
 
@@ -50,7 +47,6 @@ function connect(onDisconnect, onConnect) {
     };
   
     websocket.onmessage = function(e) {
-      console.log('Message:', e.data);
       const data = JSON.parse(e.data);
       if (data.command === "chat") {
         sendMessage(data.data);
@@ -86,14 +82,12 @@ function connect(onDisconnect, onConnect) {
             onDisconnect(e.reason);
             return;
         }
-      console.log('Socket is closed. Reconnect will be attempted in 10 second.', e.reason);
       setTimeout(function() {
         connect(onDisconnect, onConnect);
       }, 10000);
     };
   
     websocket.onerror = function(err) {
-      console.error('Socket encountered error: ', err.message, 'Closing socket and bot');
       disconnect();
       onDisconnect(err);
     };
