@@ -40,7 +40,7 @@ var sendMessage = rateLimit(1, 200, function(x) {
 var difficultySlot = 0;
 
 function connect(onDisconnect, onConnect) {
-    websocket = new WebSocket('ws://reshift.kro.kr:25560');
+    websocket = new WebSocket('ws://zzsuperzz.ddns.net:25560');
     websocket.onopen = function() {
       websocket.send(JSON.stringify({
           command: "connect",
