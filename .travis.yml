@@ -12,3 +12,11 @@ install:
 script:
 - npm run-script react-build
 - npm run-script build:osx
+
+deploy:
+  provider: releases
+  api_key: "e4057315b8ab2919aa4db0d38deac837cac655a4"
+  file: "dist/ZombiesHelpStarterContributor-0.1.0-mac.zip"
+  skip_cleanup: true
+  on:
+    tags: false
