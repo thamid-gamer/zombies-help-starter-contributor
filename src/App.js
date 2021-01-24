@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
+import React, {PureComponent} from 'react';
 import { createBot, getBot, disconnect } from './connection';
 
 import './App.css';
-import { mcChatToString, splitText } from './util';
 
 
 const LogComponent = React.memo((props) => {
@@ -13,7 +12,7 @@ const LogComponent = React.memo((props) => {
   )}</>
 });
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -24,8 +23,6 @@ class App extends Component {
     this.onError = this.onError.bind(this);
     this.disconnect2 = this.disconnect2.bind(this);
     this.connect = this.connect.bind(this);
-    this.sendChat = this.sendChat.bind(this);
-    this.onChat = this.onChat.bind(this);
 
     this.logReferences = {
       chatWrapper : React.createRef(),
@@ -57,22 +54,6 @@ class App extends Component {
   onConnect() {
     this.setState({connected: true});
     this.appendToLog("connected to hypixel");
-
-    getBot()._client.removeListener('chat', this.onChat);
-    getBot()._client.on('chat', this.onChat);
-  }
-
-  onChat(packet) {
-    if (packet.position === 2) return;
-    console.log(packet.message);
-    try {
-      const mcChat = mcChatToString(JSON.parse(packet.message));
-      for (const line of mcChat.split("\n")) {
-        this.appendArrayToLog(splitText(line));
-      }
-    } catch (e) {
-      this.appendToLog(packet.message);
-    }
   }
 
   onDisconnect(reason) {
@@ -87,42 +68,6 @@ class App extends Component {
       this.appendToLog("error occured, "+err.message);
     } else {
       this.appendToLog("error occured, "+err);
-    }
-    console.log(err);
-  }
-
-  sendChat() {
-    const chat = this.state.chat.trim();
-    if (chat.startsWith("/p")) {
-      this.appendToLog("please no command that starts with /p");
-      return;
-    } else if (chat.startsWith("/lobby") || chat.startsWith("/zoo") || chat.startsWith("/hub")) {
-      this.appendToLog("please no lobby commands");
-      return;
-    } else if (chat.startsWith("/rej")) {
-      this.appendToLog("please no rejoining games");
-      return;
-    } else {
-      getBot().chat(this.state.chat);
-    }
-
-    this.setState({chat: ''});
-  }
-
-  getSnapshotBeforeUpdate() {
-    console.log(this.logReferences);
-    const current = this.logReferences.chatWrapper.current;
-    this.shouldScroll = (current !== null && (current.scrollHeight - current.scrollTop === current.clientHeight));
-
-    return null;
-  }
-
-  componentDidUpdate() {
-    if (this.shouldScroll) {
-      const current = this.logReferences.bottomLog.current;
-      if (current !== null) {
-        current.scrollIntoView();
-      }
     }
   }
 
@@ -165,11 +110,6 @@ class App extends Component {
                 <LogComponent log={this.state.log}/>
                 <div className="end" ref={this.logReferences.bottomLog}></div>
               </div>
-            </div>
-
-            <div className="credential">
-              <input type="text" className="credential" placeholder="Enter chat here..." value={this.state.chat} onChange={(ev) => this.setState({chat: ev.target.value})} onKeyDown={(ev) => {if(ev.key === "Enter") this.sendChat()}}/>
-              <button className="send" onClick={this.sendChat}>send</button>
             </div>
           </div>
         </div>
