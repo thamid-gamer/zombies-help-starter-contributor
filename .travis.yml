@@ -1,7 +1,7 @@
 language: node_js
 node_js: '14'
 
-os: osx
+os: windows
 
 install:
 - npm install
@@ -16,7 +16,7 @@ script:
 deploy:
   provider: releases
   api_key: '$GITHUB_API_KEY'
-  file: "dist/ZombiesHelpStarterContributor-0.1.0-mac.zip"
+  file: "dist/ZombiesHelpStarterContributor-0.1.0-win.zip"
   skip_cleanup: true
   on:
     tags: false
